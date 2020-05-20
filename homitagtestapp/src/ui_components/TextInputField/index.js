@@ -13,15 +13,15 @@ import PropTypes from 'prop-types';
 import Styles from './Styles';
 
 const TextInputField = props => {
-  const [inputValue, setInputValue] = useState('');
   const [validInputFlag, setValidInputFlag] = useState(true);
 
   const handleTextChange = input => {
-    setInputValue(input);
     if (props.validationExpression.test(input)) {
       setValidInputFlag(true);
+      props.handleTextInput(input, props.label, true);
     } else {
       setValidInputFlag(false);
+      props.handleTextInput(input, props.label, false);
     }
   };
   return (
@@ -49,4 +49,5 @@ TextInputField.propTypes = {
   keyboardType: PropTypes.string,
   secureTextEntry: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
+  handleTextInput: PropTypes.func.isRequired,
 };

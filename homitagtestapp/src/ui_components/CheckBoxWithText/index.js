@@ -21,8 +21,10 @@ const CheckBoxWithText = props => {
   const handleCheckBox = () => {
     if (checked) {
       setCheckBoxValue(false);
+      props.handleCheckBox(false);
     } else {
       setCheckBoxValue(true);
+      props.handleCheckBox(true);
     }
   };
 
@@ -44,4 +46,5 @@ export default CheckBoxWithText;
 
 CheckBoxWithText.propTypes = {
   label: PropTypes.string.isRequired,
+  handleCheckBox: PropTypes.func.isRequired,
 };
