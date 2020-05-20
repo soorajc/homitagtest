@@ -92,15 +92,18 @@ const SignUpScreen = props => {
   const registerAccount = async () => {
     let currentData = [];
     const oldData = await getData();
-    const checkExistingEmailIndex = oldData.findIndex(
-      user => user.email === formData.email,
-    );
-    if (checkExistingEmailIndex > -1) {
-      Alert.alert('Warning', 'Email already in use. Try with another email');
-    } else {
-      if (oldData) {
-        currentData = oldData;
+    if (oldData) {
+      currentData = oldData;
+      const checkExistingEmailIndex = oldData.findIndex(
+        user => user.email === formData.email,
+      );
+      if (checkExistingEmailIndex > -1) {
+        Alert.alert('Warning', 'Email already in use. Try with another email');
+      } else {
+        currentData.push(formData);
+        saveData(currentData);
       }
+    } else {
       currentData.push(formData);
       saveData(currentData);
     }
