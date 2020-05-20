@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, Text, View, Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Styles from './Styles';
@@ -16,8 +16,72 @@ import FooterText from '../../ui_components/FooterText';
 import TextInputField from '../../ui_components/TextInputField';
 import Button from '../../ui_components/Button';
 import {emailPattern, passwordPattern} from '../../constants';
+import getData from '../../utils/helper';
 
 const LoginScreen = props => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [formValidity, setFormValidity] = useState({
+    validEmail: false,
+    validPassword: false,
+  });
+
+  const handleFormInput = (value, label, validity) => {
+    if (label === 'Email:') {
+      setFormData({
+        ...formData,
+        email: value,
+      });
+      setFormValidity({
+        ...formValidity,
+        validEmail: validity,
+      });
+    } else if (label === 'Password') {
+      setFormData({
+        ...formData,
+        password: value,
+      });
+      setFormValidity({
+        ...formValidity,
+        validPassword: validity,
+      });
+    }
+  };
+
+  const handleSignInButton = () => {
+    if (!formValidity.validEmail) {
+      Alert.alert('Validation Error', 'Please enter a valid email address');
+    } else if (!formValidity.validPassword) {
+      Alert.alert('Validation Error', 'Password should not be empty');
+    } else {
+      signIn();
+    }
+  };
+
+  const signIn = async () => {
+    const currentData = await getData();
+    if (currentData) {
+      const checkExistingEmailIndex = currentData.findIndex(
+        user => user.email === formData.email,
+      );
+      if (checkExistingEmailIndex > -1) {
+        const userPassword = currentData[checkExistingEmailIndex].password;
+        if (userPassword === formData.password) {
+          Alert.alert('Welcome', 'SignIn Success! Welcome to our app.');
+        } else {
+          Alert.alert('Error', 'Wrong password try again');
+        }
+      } else {
+        Alert.alert('Sign In Error', 'Email is not registered');
+      }
+    } else {
+      Alert.alert('Sign In Error', 'Email is not registered');
+    }
+  };
+
   return (
     <SafeAreaView style={Styles.container}>
       <KeyboardAwareScrollView
@@ -31,16 +95,18 @@ const LoginScreen = props => {
             keyboardType="email-address"
             placeholder="Enter your email address"
             validationExpression={emailPattern}
+            handleTextInput={handleFormInput}
           />
           <TextInputField
             label="Password"
             placeholder="Enter your password"
             validationExpression={passwordPattern}
             secureTextEntry
+            handleTextInput={handleFormInput}
           />
         </View>
         <View style={Styles.footerView}>
-          <Button label="Sign In" />
+          <Button label="Sign In" handlePress={handleSignInButton} />
           <Text style={Styles.forgotPasswordLabel}>Forgot Password ?</Text>
           <FooterText
             title="Don't have account"
