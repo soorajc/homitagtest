@@ -55,7 +55,7 @@ const LoginScreen = props => {
     if (!formValidity.validEmail) {
       Alert.alert('Validation Error', 'Please enter a valid email address');
     } else if (!formValidity.validPassword) {
-      Alert.alert('Validation Error', 'Password should not be empty');
+      Alert.alert('Validation Error', 'Password not in valid format');
     } else {
       signIn();
     }

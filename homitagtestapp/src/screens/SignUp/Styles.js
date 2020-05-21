@@ -5,6 +5,7 @@ const {height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#9686ef',
   },
   scrollView: {
     backgroundColor: '#9686ef',

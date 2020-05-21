@@ -7,7 +7,7 @@
  */
 
 import React, {useState} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, Keyboard} from 'react-native';
 import PropTypes from 'prop-types';
 
 import Styles from './Styles';
@@ -37,6 +37,8 @@ const TextInputField = props => {
         placeholderTextColor="white"
         secureTextEntry={props.secureTextEntry}
         keyboardType={props.keyboardType}
+        blurOnSubmit={false}
+        onSubmitEditing={() => Keyboard.dismiss()}
       />
     </View>
   );

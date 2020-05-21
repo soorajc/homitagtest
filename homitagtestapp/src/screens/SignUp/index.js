@@ -166,7 +166,7 @@ const SignUpScreen = props => {
           <FooterText
             title="Already have an account?"
             highlightedLabel="Login"
-            onPressHandler={() => props.navigation.goBack()}
+            onPressHandler={() => props.navigation.replace('Login')}
           />
         </View>
       </KeyboardAwareScrollView>
